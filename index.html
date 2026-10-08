@@ -1,57 +1,109 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050505"><title>Drip & Coil — магазин</title>
-<style>
-:root{--bg:#050505;--panel:#101010;--panel2:#171717;--text:#f5f5f5;--muted:#8d8d8d;--line:#292929;--white:#fff;--accent:#d8ff3e;--danger:#ff5c5c}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}header{position:sticky;top:0;z-index:20;background:rgba(5,5,5,.86);backdrop-filter:blur(18px);border-bottom:1px solid #181818}.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px}.logo{font-size:22px;font-weight:900;letter-spacing:.1em}.navlinks{display:flex;gap:20px;color:#aaa;font-size:14px}.actions{display:flex;gap:7px}.icon{min-width:42px;height:42px;border:1px solid var(--line);background:#101010;color:#fff;border-radius:50%}.hero{padding:34px 0 18px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.hero-main,.hero-side{border:1px solid var(--line);border-radius:32px;overflow:hidden;position:relative}.hero-main{min-height:520px;padding:38px;background:radial-gradient(circle at 78% 25%,#414141 0,#181818 24%,transparent 45%),linear-gradient(135deg,#181818,#070707 58%)}.eyebrow,.mini-title,.tag{color:#8d8d8d;font-size:11px;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(64px,10vw,150px);line-height:.8;margin:28px 0 18px;letter-spacing:-.07em}.hero p{max-width:500px;color:#aaa;line-height:1.6}.cta,.primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;padding:14px 21px;border:0;border-radius:999px;background:#fff;color:#050505;font-weight:900}.hero-art{position:absolute;right:-70px;bottom:-100px;width:56%;height:72%;border-radius:50%;background:radial-gradient(circle at 50% 35%,#aaa 0 8%,#666 9% 16%,#222 17% 42%,transparent 43%),repeating-conic-gradient(#252525 0 9deg,#111 9deg 18deg);filter:grayscale(1);opacity:.8}.hero-side{min-height:520px;background:#0d0d0d;padding:26px;display:flex;flex-direction:column;justify-content:space-between}.hero-side h2{font-size:48px;line-height:.95;letter-spacing:-.05em;margin:22px 0 8px}.feature,.about-card,.admin-card{border:1px solid #2d2d2d;border-radius:24px;padding:20px;background:linear-gradient(145deg,#191919,#0a0a0a)}.feature h3{margin:0 0 7px;font-size:23px}.feature p,.about-card p{color:#999;line-height:1.55;font-size:14px}.section{padding:25px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}.section-head h2{font-size:38px;letter-spacing:-.04em;margin:0}.section-head span{color:#777;font-size:12px}.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.cat{min-height:135px;border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;background:#101010;color:#fff;text-align:left}.cat.active,.cat:hover{border-color:#555;background:#171717}.cat strong{font-size:17px}.cat small{color:#888}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.search,.filter,.field{border:1px solid var(--line);background:#101010;color:#fff;border-radius:14px;padding:12px 14px;outline:0}.search{flex:1;min-width:220px}.products{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#0d0d0d}.pic{height:235px;background:linear-gradient(145deg,#282828,#090909);display:grid;place-items:center;position:relative;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover}.pic .placeholder{font-size:35px;font-weight:900;color:#333;letter-spacing:-.08em}.availability{position:absolute;left:10px;top:10px;padding:6px 9px;border-radius:999px;background:#080808dd;border:1px solid #333;font-size:10px}.availability.pre{color:#ddd}.card-body{padding:14px}.card h3{margin:7px 0;font-size:17px}.price{font-weight:900;font-size:19px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.add,.heart,.small-btn{border:1px solid #333;background:#171717;color:#fff;border-radius:11px;padding:9px 11px}.add{background:#fff;color:#000;border-color:#fff;font-weight:900}.empty{padding:40px;border:1px dashed #333;border-radius:20px;color:#777;text-align:center;grid-column:1/-1}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.user-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.user-box{border:1px solid #2b2b2b;border-radius:17px;padding:15px;background:#0d0d0d;color:#ddd}.user-box span{color:#777;font-size:12px}.admin{padding:50px 0 80px}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin-card h3{margin-top:0}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field.full{grid-column:1/-1}.field::placeholder{color:#666}.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.danger{border-color:#5c2929!important;color:#ff8585!important}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:10px;border-bottom:1px solid #252525;text-align:left;vertical-align:top}.muted{color:#777}.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);display:none;align-items:end;justify-content:center;z-index:50}.modal.open{display:flex}.sheet{width:min(680px,100%);background:#111;border:1px solid #303030;border-radius:28px 28px 0 0;padding:22px;max-height:88vh;overflow:auto}.sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet h2{margin:0}.close{border:1px solid #333;background:#171717;color:#fff;border-radius:50%;width:38px;height:38px}.cart-item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #222}.notice{border:1px solid #3a3a3a;border-radius:16px;padding:14px;background:#0c0c0c;color:#aaa;line-height:1.5}.total{display:flex;justify-content:space-between;font-size:20px;font-weight:900;margin:18px 0}.primary{width:100%;margin-top:8px;border-radius:13px}.secondary{background:#171717;color:#fff;border:1px solid #333}.order-form{display:grid;gap:9px;margin-top:15px}.hidden{display:none!important}.badge{display:inline-block;padding:5px 8px;border:1px solid #333;border-radius:999px;font-size:10px;color:#aaa}footer{border-top:1px solid #191919;padding:28px 0;color:#777;font-size:12px;text-align:center}
-@media(max-width:900px){.hero-grid,.about-grid,.admin-grid{grid-template-columns:1fr}.cat-grid{grid-template-columns:repeat(2,1fr)}.products{grid-template-columns:repeat(2,1fr)}.user-grid{grid-template-columns:1fr 1fr}.navlinks{display:none}}
-@media(max-width:520px){.hero-main{min-height:490px;padding:26px}.hero-side{min-height:420px}.hero h1{font-size:68px}.hero-art{width:82%;right:-80px}.products{gap:8px}.pic{height:175px}.card-body{padding:11px}.card h3{font-size:14px}.cat{min-height:120px}.section-head h2{font-size:30px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <title>Drip & Coil — интернет-магазин</title>
+  <meta name="description" content="Drip & Coil — современный каталог товаров, заказов и доставки.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header><div class="wrap nav"><div class="logo">Drip & Coil</div><nav class="navlinks"><a href="#shop">Каталог</a><a href="#about">О нас</a><a href="#account">Профиль</a><a href="#admin">Админ</a></nav><div class="actions"><button class="icon" onclick="openFavorites()">♡</button><button class="icon" onclick="openCart()">🛒 <span id="cartCount">0</span></button></div></div></header>
-<main>
-<section class="hero wrap"><div class="hero-grid"><div class="hero-main"><div class="eyebrow">Drip & Coil / Store</div><h1>YOUR<br>STYLE.</h1><p>Одежда, электроника и другие товары. Выбирай товар, добавляй в корзину и отправляй готовый список заказа админу в личные сообщения.</p><a class="cta" href="#shop">Смотреть каталог →</a><div class="hero-art"></div></div><div class="hero-side"><div><div class="mini-title">01 / Simple order</div><h2>Выбрал.<br>Собрал.<br>Отправил.</h2><p style="color:#888;line-height:1.6">Можно купить товар, который уже есть в наличии, или оформить заявку на товар под заказ.</p></div><div class="feature"><div class="mini-title">02 / Cart</div><h3>Список заказа</h3><p>Клиент собирает корзину, указывает имя и контакт, после чего получает готовое сообщение для администратора.</p></div></div></div></section>
-<section class="section wrap"><div class="section-head"><h2>Категории</h2><span>Выбери направление</span></div><div class="cat-grid"><button class="cat active" onclick="setCategory('all',this)"><span class="muted">01</span><strong>Все товары</strong><small>Весь каталог</small></button><button class="cat" onclick="setCategory('fashion',this)"><span class="muted">02</span><strong>Одежда и мода</strong><small>Стиль · аксессуары</small></button><button class="cat" onclick="setCategory('electronics',this)"><span class="muted">03</span><strong>Электроника</strong><small>Гаджеты · техника</small></button><button class="cat" onclick="restricted()"><span class="muted">04</span><strong>Вейпы</strong><small>18+ раздел</small></button><button class="cat" onclick="restricted()"><span class="muted">05</span><strong>Жидкости</strong><small>18+ раздел</small></button></div></section>
-<section class="section wrap" id="shop"><div class="section-head"><h2>Каталог</h2><span id="resultText">Все товары</span></div><div class="toolbar"><input class="search" id="search" placeholder="Поиск по каталогу…" oninput="render()"><select class="filter" id="sort" onchange="render()"><option value="default">Рекомендуемые</option><option value="low">Цена ↑</option><option value="high">Цена ↓</option></select></div><div class="products" id="products"></div></section>
-<section class="section wrap" id="about"><div class="section-head"><h2>ABOUT US</h2><span>Drip & Coil</span></div><div class="about-grid"><div class="about-card"><div class="mini-title">Drip</div><h3>Стиль и одежда</h3><p>Название Drip связано со стилем, образом и одеждой. Каталог можно расширять брендами, размерами, цветами и коллекциями.</p></div><div class="about-card"><div class="mini-title">Coil</div><h3>Спираль</h3><p>Coil — отсылка к спирали. В возрастные категории можно вынести отдельный раздел с необходимыми ограничениями и проверками.</p></div></div></section>
-<section class="section wrap" id="account"><div class="about-card"><div class="mini-title">Account</div><h3>Личный кабинет</h3><div class="user-grid"><div class="user-box">👤 Профиль<br><span>Имя и контакты</span></div><div class="user-box">♡ Избранное<br><span>Сохранённые товары</span></div><div class="user-box">📦 Заказы<br><span>История заявок</span></div><div class="user-box">🔔 Уведомления<br><span>Новости и акции</span></div></div></div></section>
-<section class="admin wrap" id="admin"><div class="section-head"><h2>ADMIN</h2><span>Демо-панель владельца</span></div><div id="adminLogin" class="admin-card"><h3>Вход владельца</h3><p class="muted">Это демонстрационная панель. Пароль хранится только в этом браузере и НЕ является безопасной системой для реального магазина.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="field" id="adminPass" type="password" placeholder="Пароль"><button class="add" onclick="adminLogin()">Войти</button></div></div><div id="adminPanel" class="hidden"><div class="admin-grid"><div class="admin-card"><h3 id="formTitle">Добавить товар</h3><div class="form-grid"><input class="field" id="pName" placeholder="Название"><select class="field" id="pCat"><option value="fashion">Одежда и мода</option><option value="electronics">Электроника</option></select><input class="field" id="pPrice" type="number" placeholder="Цена, ₽"><select class="field" id="pAvail"><option value="stock">В наличии</option><option value="preorder">Под заказ</option></select><input class="field full" id="pImage" placeholder="URL изображения (необязательно)"><input class="field full" id="pDesc" placeholder="Короткое описание"><input class="field" id="pStock" type="number" placeholder="Количество"><div class="admin-actions field full" style="padding:0;border:0;background:none"><button class="add" onclick="saveProduct()">Сохранить товар</button><button class="small-btn" onclick="clearForm()">Очистить</button></div></div></div><div class="admin-card"><h3>Настройки заказа</h3><p class="muted">Укажи username Telegram администратора. Например: <b>@s88xy</b>. Номер WhatsApp можно добавить позже.</p><input class="field" id="tgUser" value="s88xy" placeholder="Telegram username без @"><div class="admin-actions"><button class="add" onclick="saveSettings()">Сохранить</button><button class="small-btn" onclick="exportData()">Экспорт каталога</button><button class="small-btn" onclick="logoutAdmin()">Выйти</button></div><p class="muted" style="margin-top:16px">Заказы в этой демо-версии сохраняются локально в браузере. Для настоящего магазина подключим базу данных, чтобы заказы приходили тебе с любого устройства.</p></div></div><div class="admin-card" style="margin-top:12px"><h3>Товары</h3><div style="overflow:auto"><table class="table"><thead><tr><th>Товар</th><th>Цена</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="adminProducts"></tbody></table><h3 style="margin-top:28px">Заказы</h3><table class="table"><thead><tr><th>ID</th><th>Клиент</th><th>Сумма</th><th>Статус</th><th>Дата</th><th>Действия</th></tr></thead><tbody id="ordersAdmin"></tbody></table></div></div></div></section>
-</main>
-<footer><div>© 2026 Все права защищены Drip & Coil Corporation</div><div style="margin-top:7px;color:#555">Drip — стиль / одежда · Coil — спираль для вейпов</div><div style="margin-top:12px"><a href="https://t.me/s88xy" target="_blank" style="color:#fff;text-decoration:underline">Связаться с администратором в Telegram</a></div></footer>
-<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet"><div class="sheet-head"><h2 id="modalTitle">Корзина</h2><button class="close" onclick="closeModal()">×</button></div><div id="modalBody" style="margin-top:16px"></div></div></div>
-<script>
-const API='/api';
-let products=[], cart=JSON.parse(localStorage.getItem('dc_cart')||'[]'), favorites=JSON.parse(localStorage.getItem('dc_fav')||'[]');
-let category='all', editingId=null;
-const $=id=>document.getElementById(id), rub=n=>Number(n).toLocaleString('ru-RU')+' ₽';
-function esc(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function persistCart(){localStorage.setItem('dc_cart',JSON.stringify(cart));$('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0)}
-async function api(path,opts={}){let r=await fetch(API+path,{credentials:'include',headers:{'Content-Type':'application/json',...(opts.headers||{})},...opts});let d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Ошибка сервера');return d}
-async function loadProducts(){products=await api('/products');render()}
-function setCategory(c,el){category=c;document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));el.classList.add('active');$('resultText').textContent=c==='all'?'Все товары':c==='fashion'?'Одежда и мода':'Электроника';render();$('shop').scrollIntoView({behavior:'smooth'})}
-function render(){let q=$('search').value.toLowerCase(),sort=$('sort').value;let list=products.filter(p=>(category==='all'||p.cat===category)&&(`${p.name} ${p.desc||''}`).toLowerCase().includes(q));if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);$('products').innerHTML=list.length?list.map(p=>`<article class="card"><div class="pic">${p.image?`<img src="${esc(p.image)}" alt="">`:'<div class="placeholder">D&C</div>'}<span class="availability ${p.avail==='preorder'?'pre':''}">${p.avail==='stock'?'В наличии':'Под заказ'}</span></div><div class="card-body"><div class="tag">${p.cat==='fashion'?'Одежда и мода':'Электроника'}</div><h3>${esc(p.name)}</h3><div class="muted">${esc(p.desc||'')}</div><div class="price" style="margin-top:7px">${rub(p.price)}</div><div class="row"><button class="heart" onclick="toggleFav(${p.id})">${favorites.includes(p.id)?'♥':'♡'}</button><button class="add" onclick="addCart(${p.id})">В корзину</button></div></div></article>`).join(''):'<div class="empty">Ничего не найдено.</div>';persistCart()}
-function addCart(id){let p=products.find(x=>x.id===id);if(!p)return;let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});persistCart();openCart()}
-function toggleFav(id){favorites.includes(id)?favorites=favorites.filter(x=>x!==id):favorites.push(id);localStorage.setItem('dc_fav',JSON.stringify(favorites));render()}
-function openFavorites(){openModal('fav')};function openCart(){openModal('cart')}
-function openModal(type){$('modal').classList.add('open');if(type==='fav'){let list=products.filter(p=>favorites.includes(p.id));$('modalTitle').textContent='Избранное';$('modalBody').innerHTML=list.length?list.map(p=>`<div class="cart-item"><span>${esc(p.name)}</span><b>${rub(p.price)}</b></div>`).join(''):'<div class="notice">Избранное пустое.</div>';return}let items=cart.map(x=>({...products.find(p=>p.id===x.id),qty:x.qty})).filter(x=>x.id),total=items.reduce((s,p)=>s+p.price*p.qty,0);$('modalTitle').textContent='Корзина';$('modalBody').innerHTML=items.length?items.map(p=>`<div class="cart-item"><span>${esc(p.name)} × ${p.qty}<br><span class="muted">${p.avail==='stock'?'В наличии':'Под заказ'}</span></span><b>${rub(p.price*p.qty)}</b></div>`).join('')+`<div class="total"><span>Итого</span><span>${rub(total)}</span></div><div class="notice">Заказ отправляется админу в Telegram. Оплата на сайте не требуется.</div><button class="primary" onclick="orderForm()">Оформить заявку</button><button class="primary secondary" onclick="clearCart()">Очистить корзину</button>`:'<div class="notice">Корзина пока пустая.</div>'}
-function orderForm(){$('modalTitle').textContent='Оформление заявки';$('modalBody').innerHTML=`<div class="order-form"><input class="field" id="clientName" placeholder="Ваше имя"><input class="field" id="clientContact" placeholder="Telegram / телефон для связи"><textarea class="field" id="clientComment" placeholder="Комментарий: размер, цвет, удобное время встречи и т.д." rows="4"></textarea><button class="primary" onclick="sendOrder()">Отправить заявку</button><div id="orderResult"></div></div>`}
-async function sendOrder(){let name=$('clientName').value.trim(),contact=$('clientContact').value.trim(),comment=$('clientComment').value.trim();if(!name||!contact){$('orderResult').innerHTML='<div class="notice">Укажи имя и контакт для связи.</div>';return}try{let order=await api('/orders',{method:'POST',body:JSON.stringify({name,contact,comment,items:cart})});let text=order.telegramText;$('orderResult').innerHTML=`<div class="notice">Заявка №${order.id} сохранена. Открой Telegram и отправь готовое сообщение админу.</div><a class="primary" href="https://t.me/s88xy?text=${encodeURIComponent(text)}" target="_blank">Открыть Telegram</a><button class="primary secondary" onclick="navigator.clipboard.writeText(${JSON.stringify(text)})">Скопировать сообщение</button>`;cart=[];persistCart()}catch(e){$('orderResult').innerHTML=`<div class="notice">${esc(e.message)}</div>`}}
-function clearCart(){cart=[];persistCart();openCart()};function closeModal(){$('modal').classList.remove('open')}
-function restricted(){openModal('restricted');$('modalTitle').textContent='Возрастная категория';$('modalBody').innerHTML='<div class="notice">Вейпы и жидкости относятся к возрастной категории. Реальный раздел можно подключать только с учётом законодательства, возрастной проверки и правил площадки/платёжных сервисов.</div>'}
-async function adminLogin(){try{await api('/admin/login',{method:'POST',body:JSON.stringify({password:$('adminPass').value})});showAdmin()}catch(e){alert(e.message)}}
-async function showAdmin(){ $('adminLogin').classList.add('hidden');$('adminPanel').classList.remove('hidden');try{let s=await api('/admin/settings');$('tgUser').value=s.telegram||'s88xy';}catch{} await renderAdmin()}
-async function checkAdmin(){try{await api('/admin/me');showAdmin()}catch{}}
-async function logoutAdmin(){await api('/admin/logout',{method:'POST'});$('adminLogin').classList.remove('hidden');$('adminPanel').classList.add('hidden')}
-async function saveSettings(){try{await api('/admin/settings',{method:'PUT',body:JSON.stringify({telegram:$('tgUser').value.replace('@','').trim()})});alert('Настройки сохранены на сервере.')}catch(e){alert(e.message)}}
-function clearForm(){editingId=null;$('formTitle').textContent='Добавить товар';['pName','pPrice','pImage','pDesc','pStock'].forEach(id=>$(id).value='');$('pCat').value='fashion';$('pAvail').value='stock'}
-async function saveProduct(){let body={name:$('pName').value.trim(),price:Number($('pPrice').value),cat:$('pCat').value,avail:$('pAvail').value,stock:Number($('pStock').value||0),image:$('pImage').value.trim(),desc:$('pDesc').value.trim()};if(!body.name||!body.price)return alert('Заполни название и цену.');try{if(editingId)await api('/admin/products/'+editingId,{method:'PUT',body:JSON.stringify(body)});else await api('/admin/products',{method:'POST',body:JSON.stringify(body)});clearForm();await loadProducts();await renderAdmin()}catch(e){alert(e.message)}}
-async function editProduct(id){let p=products.find(x=>x.id===id);if(!p)return;editingId=id;$('formTitle').textContent='Редактировать товар';$('pName').value=p.name;$('pPrice').value=p.price;$('pCat').value=p.cat;$('pAvail').value=p.avail;$('pStock').value=p.stock||0;$('pImage').value=p.image||'';$('pDesc').value=p.desc||'';location.hash='admin'}
-async function deleteProduct(id){if(!confirm('Удалить товар?'))return;try{await api('/admin/products/'+id,{method:'DELETE'});cart=cart.filter(x=>x.id!==id);persistCart();await loadProducts();await renderAdmin()}catch(e){alert(e.message)}}
-async function renderAdmin(){try{let rows=await api('/admin/orders');$('adminProducts').innerHTML=products.map(p=>`<tr><td><b>${esc(p.name)}</b><br><span class="muted">${esc(p.cat)}</span></td><td>${rub(p.price)}</td><td><span class="badge">${p.avail==='stock'?'В наличии':'Под заказ'}${p.avail==='stock'?' · '+p.stock+' шт.':''}</span></td><td><button class="small-btn" onclick="editProduct(${p.id})">Изменить</button> <button class="small-btn danger" onclick="deleteProduct(${p.id})">Удалить</button></td></tr>`).join('');$('ordersAdmin').innerHTML=rows.length?rows.map(o=>`<tr><td>#${o.id}</td><td><b>${esc(o.name)}</b><br><span class="muted">${esc(o.contact)}</span></td><td>${rub(o.total)}</td><td>${esc(o.status)}</td><td>${new Date(o.created_at).toLocaleString('ru-RU')}</td><td><button class="small-btn" onclick="setOrderStatus(${o.id},'Принят')">Принять</button> <button class="small-btn" onclick="setOrderStatus(${o.id},'Выдан')">Выдан</button></td></tr>`).join(''):'<tr><td colspan="6" class="muted">Заказов пока нет.</td></tr>'}catch(e){$('ordersAdmin').innerHTML='<tr><td colspan="6">Войдите в админку.</td></tr>'}}
-async function setOrderStatus(id,status){try{await api('/admin/orders/'+id,{method:'PUT',body:JSON.stringify({status})});renderAdmin()}catch(e){alert(e.message)}}
-async function exportData(){let data=await api('/admin/products');let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='drip-and-coil-products.json';a.click()}
-checkAdmin();loadProducts();
-</script>
-</body></html>
+  <div id="toast" class="toast"></div>
+
+  <header class="topbar">
+    <div class="wrap nav">
+      <button class="brand" data-view="home">DRIP<span>&</span>COIL</button>
+      <nav class="desktop-nav">
+        <button data-view="catalog">Каталог</button>
+        <button data-category="electronics">Электроника</button>
+        <button data-category="clothing">Одежда</button>
+        <button data-category="vape">Вейпы</button>
+        <button data-view="news">Новости</button>
+        <button data-view="support">Поддержка</button>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Поиск">⌕</button>
+        <button class="icon-btn" id="profileBtn" aria-label="Профиль">◯</button>
+        <button class="cart-btn" id="cartBtn">Корзина <b id="cartCount">0</b></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <div class="eyebrow">DRIP & COIL / NEW ERA</div>
+        <h1>Твой стиль.<br><em>Твои товары.</em><br>Один заказ.</h1>
+        <p>Каталог электроники, одежды и других категорий с понятным заказом и отслеживанием доставки.</p>
+        <div class="hero-actions">
+          <button class="primary" data-view="catalog">Открыть каталог <span>→</span></button>
+          <button class="secondary" data-view="news">Акции и новости</button>
+        </div>
+        <div class="hero-stats"><span>✓ Удобный каталог</span><span>✓ Статусы заказа</span><span>✓ Поддержка в Telegram</span></div>
+      </div>
+      <div class="hero-art">
+        <div class="art-grid"></div>
+        <div class="art-card"><small>FEATURED</small><strong>NEW<br>DROP</strong><span>DRIP / COIL</span></div>
+      </div>
+    </section>
+
+    <section class="categories wrap">
+      <div class="section-head"><div><small>EXPLORE</small><h2>Категории</h2></div><button data-view="catalog">Все товары →</button></div>
+      <div class="cat-grid">
+        <button class="cat-card c1" data-category="electronics"><span>01</span><b>Электроника</b><small>Гаджеты и аксессуары</small></button>
+        <button class="cat-card c2" data-category="vape"><span>02</span><b>Вейпы</b><small>Возрастная категория</small></button>
+        <button class="cat-card c3" data-category="liquids"><span>03</span><b>Жидкости</b><small>Возрастная категория</small></button>
+        <button class="cat-card c4" data-category="clothing"><span>04</span><b>Одежда</b><small>Streetwear</small></button>
+      </div>
+    </section>
+
+    <section class="products wrap" id="catalogSection">
+      <div class="section-head">
+        <div><small>SHOP</small><h2 id="catalogTitle">Популярное</h2></div>
+        <div class="filters">
+          <button class="filter active" data-category="all">Все</button>
+          <button class="filter" data-category="electronics">Электроника</button>
+          <button class="filter" data-category="clothing">Одежда</button>
+          <button class="filter" data-category="vape">Вейпы</button>
+          <button class="filter" data-category="liquids">Жидкости</button>
+        </div>
+      </div>
+      <div class="search-row hidden" id="searchRow"><input id="searchInput" placeholder="Поиск по товарам..."><button id="clearSearch">×</button></div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section class="promo wrap">
+      <div><small>DRIP & COIL</small><h2>Собирай заказ<br>в одном месте.</h2><p>От каталога до статуса доставки — без лишних шагов.</p></div>
+      <button class="primary" data-view="profile">Мои заказы →</button>
+    </section>
+
+    <section class="info-grid wrap">
+      <article><span>01</span><h3>Заказ</h3><p>Создай корзину и оформи заказ.</p></article>
+      <article><span>02</span><h3>Сборка</h3><p>Следи за статусом подготовки.</p></article>
+      <article><span>03</span><h3>Доставка</h3><p>Видь текущий этап и ожидаемую дату.</p></article>
+      <article><span>04</span><h3>Поддержка</h3><p>Свяжись с нами в Telegram.</p></article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div><button class="brand footer-brand" data-view="home">DRIP<span>&</span>COIL</button><p>Современный каталог и сервис заказов.</p></div>
+      <div><b>Магазин</b><button data-view="catalog">Каталог</button><button data-view="news">Новости</button><button data-view="support">Поддержка</button></div>
+      <div><b>Аккаунт</b><button data-view="profile">Профиль</button><button data-view="profile">Мои заказы</button><button id="adminOpen">Админ</button></div>
+      <div><b>Связь</b><a href="https://t.me/s88xy" target="_blank" rel="noopener">Telegram @s88xy</a><small>© 2026 Drip & Coil</small></div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal" id="modal"></div>
+  </div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-head"><h3>Корзина</h3><button id="closeCart">×</button></div>
+    <div id="cartItems"></div>
+    <div class="drawer-foot"><div><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="primary" id="checkoutBtn">Оформить заказ</button></div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
