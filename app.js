@@ -1,117 +1,29 @@
-const KEY='dc_store_v2';
-const defaultState={
-  user:null, cart:[], orders:[], favorites:[],
-  products:[
-    {id:1,name:'Pulse Air Pro',cat:'electronics',price:7990,desc:'Компактный гаджет для повседневного использования.',badge:'NEW'},
-    {id:2,name:'Core Wireless',cat:'electronics',price:4990,desc:'Минималистичный аксессуар с удобным форм-фактором.',badge:'TOP'},
-    {id:3,name:'Drip Essential Tee',cat:'clothing',price:2990,desc:'Базовая футболка в стиле streetwear.',badge:'NEW'},
-    {id:4,name:'Oversize Hoodie',cat:'clothing',price:6490,desc:'Плотное худи свободного кроя.',badge:'SALE'},
-    {id:5,name:'Device One',cat:'vape',price:0,desc:'Возрастная категория. Доступность зависит от законодательства.',badge:'18+'},
-    {id:6,name:'Liquid Line',cat:'liquids',price:0,desc:'Возрастная категория. Доступность зависит от законодательства.',badge:'18+'}
-  ],
-  news:[
-    {title:'Новая коллекция',text:'Добавили новые позиции в каталог.'},
-    {title:'Акция недели',text:'Следите за разделом акций — предложения обновляются.'}
-  ]
-};
-let state=JSON.parse(localStorage.getItem(KEY)||'null')||structuredClone(defaultState);
-const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
-const rub=n=>n?new Intl.NumberFormat('ru-RU').format(n)+' ₽':'По запросу';
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const toast=m=>{const t=document.querySelector('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};
-const modal=(html)=>{document.querySelector('#modal').innerHTML=html;document.querySelector('#modalBackdrop').classList.remove('hidden')};
-const closeModal=()=>document.querySelector('#modalBackdrop').classList.add('hidden');
-document.querySelector('#modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});
-
-function renderProducts(cat='all',query=''){
-  const grid=document.querySelector('#productGrid');
-  const items=state.products.filter(p=>(cat==='all'||p.cat===cat)&&(!query||p.name.toLowerCase().includes(query.toLowerCase())));
-  grid.innerHTML=items.length?items.map(p=>`<article class="product">
-    <div class="product-img"><span class="badge">${esc(p.badge||'NEW')}</span><div class="fake-img"></div></div>
-    <div class="product-body"><div class="product-cat">${catName(p.cat)}</div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
-    <div class="price-row"><span class="price">${rub(p.price)}</span><button class="add" data-add="${p.id}">${p.price?'В корзину':'Подробнее'}</button></div></div>
-  </article>`).join(''):'<div class="notice">Ничего не найдено.</div>';
-  grid.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addToCart(+b.dataset.add));
-}
-function catName(c){return {electronics:'Электроника',clothing:'Одежда',vape:'Вейпы',liquids:'Жидкости'}[c]||c}
-function updateCart(){
-  document.querySelector('#cartCount').textContent=state.cart.reduce((s,i)=>s+i.qty,0);
-  const box=document.querySelector('#cartItems');
-  if(!state.cart.length){box.innerHTML='<div class="notice" style="margin-top:20px">Корзина пока пустая.</div>';document.querySelector('#cartTotal').textContent='0 ₽';return}
-  let total=0;
-  box.innerHTML=state.cart.map(i=>{const p=state.products.find(x=>x.id===i.id);if(!p)return'';total+=p.price*i.qty;return `<div class="cart-item"><div class="thumb"></div><div><b>${esc(p.name)}</b><br><small>${i.qty} × ${rub(p.price)}</small><br><button data-remove="${p.id}">Удалить</button></div><strong>${rub(p.price*i.qty)}</strong></div>`}).join('');
-  document.querySelector('#cartTotal').textContent=rub(total);
-  box.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{state.cart=state.cart.filter(i=>i.id!==+b.dataset.remove);save();updateCart()});
-}
-function addToCart(id){
-  const p=state.products.find(x=>x.id===id); if(!p)return;
-  if(!p.price){modal(`<div class="close-line"><h2>${esc(p.name)}</h2><button onclick="closeModal()">×</button></div><div class="notice">Эта категория может быть возрастно ограниченной. Для таких товаров сайт должен применять обязательную проверку возраста и требования законодательства. Продолжение покупки в этой демо-версии отключено.</div>`);return}
-  const x=state.cart.find(i=>i.id===id);x?x.qty++:state.cart.push({id,qty:1});save();updateCart();toast('Добавлено в корзину');
-}
-function openProfile(){
-  if(!state.user){modal(`<div class="close-line"><h2>Личный кабинет</h2><button onclick="closeModal()">×</button></div>
-    <div class="tabs"><button class="active">Вход</button><button id="regTab">Регистрация</button></div>
-    <form class="form" id="loginForm"><label>Email<input required type="email" name="email" placeholder="you@example.com"></label><label>Пароль<input required type="password" name="password" placeholder="••••••••"></label><button class="primary">Войти</button></form>
-    <p class="notice">Это локальная демонстрация интерфейса. Для реальной авторизации нужен сервер/база данных.</p>`);
-    document.querySelector('#regTab').onclick=registerForm;
-  } else profileView();
-}
-function registerForm(){
-  document.querySelector('#modal').innerHTML=`<div class="close-line"><h2>Регистрация</h2><button onclick="closeModal()">×</button></div><form class="form" id="regForm"><label>Имя<input required name="name"></label><label>Email<input required type="email" name="email"></label><label>Телефон<input name="phone"></label><label>Пароль<input required minlength="6" type="password" name="password"></label><button class="primary">Создать аккаунт</button></form>`;
-  document.querySelector('#regForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);state.user={name:f.get('name'),email:f.get('email'),phone:f.get('phone')};save();closeModal();toast('Аккаунт создан')};
-}
-function profileView(){
-  const orders=state.orders;
-  modal(`<div class="close-line"><h2>Привет, ${esc(state.user.name)}</h2><button onclick="closeModal()">×</button></div>
-  <div class="tabs"><button class="active">Профиль</button><button id="ordersTab">Заказы (${orders.length})</button></div>
-  <div class="notice"><b>${esc(state.user.email)}</b><br>${esc(state.user.phone||'Телефон не указан')}</div>
-  <div style="height:12px"></div><button class="secondary" id="logout">Выйти</button>`);
-  document.querySelector('#logout').onclick=()=>{state.user=null;save();closeModal();toast('Вы вышли')};
-  document.querySelector('#ordersTab').onclick=()=>ordersView();
-}
-function ordersView(){
-  modal(`<div class="close-line"><h2>Мои заказы</h2><button onclick="closeModal()">×</button></div>${state.orders.length?state.orders.map(o=>`<div class="order-card"><b>Заказ #${o.id}</b><br><small>${new Date(o.date).toLocaleString('ru-RU')}</small><p>${esc(o.status)}</p><div class="progress">${[1,2,3,4,5].map((_,i)=>`<span class="step ${i<o.step?'done':''}"></span>`).join('')}</div><button class="secondary" onclick="trackOrder('${o.id}')">Открыть отслеживание</button></div>`).join(''):'<div class="notice">Заказов пока нет.</div>')}`);
-}
-function trackOrder(id){
- const o=state.orders.find(x=>x.id==id); if(!o)return;
- modal(`<div class="close-line"><h2>Заказ #${o.id}</h2><button onclick="closeModal()">×</button></div><div class="order-card"><b>${esc(o.status)}</b><div class="progress">${['Создан','Подтверждён','Собирается','В пути','Прибыл'].map((x,i)=>`<div><span class="step ${i<o.step?'done':''}" style="display:block"></span><small>${x}</small></div>`).join('')}</div><p>Ожидаемая дата: <b>${esc(o.eta||'уточняется')}</b></p></div>`);
-}
-function checkout(){
- if(!state.cart.length)return toast('Корзина пустая');
- if(!state.user){openProfile();return}
- const items=state.cart.map(i=>({id:i.id,qty:i.qty,name:state.products.find(p=>p.id===i.id)?.name}));
- const id=Math.floor(100000+Math.random()*899999);
- state.orders.unshift({id,date:Date.now(),items,status:'Заказ создан',step:1,eta:'уточняется'});
- state.cart=[];save();updateCart();document.querySelector('#cartDrawer').classList.remove('open');
- modal(`<div class="close-line"><h2>Заказ #${id} создан</h2><button onclick="closeModal()">×</button></div><div class="notice">Заказ сохранён. В рабочей версии сюда подключаются реальная база данных, уведомления и логистика.</div><div style="height:12px"></div><button class="primary" onclick="trackOrder('${id}')">Отслеживать заказ</button>`);toast('Заказ создан');
-}
-function admin(){
- modal(`<div class="close-line"><h2>Админ-панель</h2><button onclick="closeModal()">×</button></div><form class="form" id="adminForm"><label>Пароль<input required type="password" name="pass"></label><button class="primary">Войти</button></form><p class="notice">В этой демо-версии панель работает локально. Перед реальным запуском пароль должен проверяться на сервере, а не в JavaScript.</p>`);
- document.querySelector('#adminForm').onsubmit=e=>{e.preventDefault();if(new FormData(e.target).get('pass')==='admin123'){adminPanel()}else toast('Неверный пароль')};
-}
-function adminPanel(){
- modal(`<div class="close-line"><h2>Админ</h2><button onclick="closeModal()">×</button></div>
- <div class="tabs"><button class="active">Товары</button><button id="aOrders">Заказы</button></div>
- <div class="form"><label>Название<input id="aName"></label><label>Цена<input id="aPrice" type="number"></label><label>Категория<select id="aCat"><option value="electronics">Электроника</option><option value="clothing">Одежда</option><option value="vape">Вейпы</option><option value="liquids">Жидкости</option></select></label><label>Описание<textarea id="aDesc"></textarea></label><button class="primary" id="aAdd">Добавить товар</button></div>
- <div style="height:16px"></div><div class="notice">Товаров: ${state.products.length}. Для реальной работы фотографии и данные нужно хранить в облачной БД/Storage.</div>`);
- document.querySelector('#aAdd').onclick=()=>{const name=document.querySelector('#aName').value.trim();if(!name)return toast('Введите название');state.products.push({id:Date.now(),name,price:+document.querySelector('#aPrice').value||0,cat:document.querySelector('#aCat').value,desc:document.querySelector('#aDesc').value||'',badge:'NEW'});save();renderProducts();toast('Товар добавлен')};
- document.querySelector('#aOrders').onclick=adminOrders;
-}
-function adminOrders(){
- modal(`<div class="close-line"><h2>Заказы</h2><button onclick="closeModal()">×</button></div>${state.orders.length?state.orders.map(o=>`<div class="order-card"><b>#${o.id}</b><p>${esc(o.status)}</p><select data-status="${o.id}"><option>Заказ создан</option><option>Подтверждён</option><option>Собирается</option><option>В пути</option><option>Прибыл</option></select></div>`).join(''):'<div class="notice">Заказов нет.</div>'}`);
- document.querySelectorAll('[data-status]').forEach(s=>s.onchange=()=>{const o=state.orders.find(x=>x.id==s.dataset.status);o.status=s.value;o.step=['Заказ создан','Подтверждён','Собирается','В пути','Прибыл'].indexOf(s.value)+1;save();toast('Статус обновлён')});
-}
-function showNews(){modal(`<div class="close-line"><h2>Новости и акции</h2><button onclick="closeModal()">×</button></div>${state.news.map(n=>`<div class="order-card"><b>${esc(n.title)}</b><p>${esc(n.text)}</p></div>`).join('')}`)}
-function support(){modal(`<div class="close-line"><h2>Поддержка</h2><button onclick="closeModal()">×</button></div><p>Есть вопрос по товару или заказу?</p><a class="primary" style="display:inline-block" href="https://t.me/s88xy" target="_blank" rel="noopener">Открыть Telegram @s88xy</a>`)}
-function route(view){if(view==='catalog'){document.querySelector('#catalogSection').scrollIntoView({behavior:'smooth'});return}if(view==='profile'){openProfile();return}if(view==='news'){showNews();return}if(view==='support'){support();return}window.scrollTo({top:0,behavior:'smooth'})}
-document.addEventListener('click',e=>{const v=e.target.closest('[data-view]')?.dataset.view;if(v)route(v);const c=e.target.closest('[data-category]')?.dataset.category;if(c){document.querySelector('#catalogSection').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.dataset.category===c));renderProducts(c)}});
-document.querySelector('#cartBtn').onclick=()=>{document.querySelector('#cartDrawer').classList.add('open');updateCart()};
-document.querySelector('#closeCart').onclick=()=>document.querySelector('#cartDrawer').classList.remove('open');
-document.querySelector('#checkoutBtn').onclick=checkout;
-document.querySelector('#profileBtn').onclick=openProfile;
-document.querySelector('#adminOpen').onclick=admin;
-document.querySelector('#searchBtn').onclick=()=>document.querySelector('#searchRow').classList.toggle('hidden');
-document.querySelector('#searchInput').oninput=e=>renderProducts(document.querySelector('.filter.active')?.dataset.category||'all',e.target.value);
-document.querySelector('#clearSearch').onclick=()=>{document.querySelector('#searchInput').value='';renderProducts()};
-document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderProducts(b.dataset.category)});
-renderProducts();updateCart();
+const cfg=window.DC_CONFIG||{};
+if(!cfg.SUPABASE_URL||cfg.SUPABASE_URL.includes("YOUR-")){console.warn("Create config.js from config.example.js and add Supabase URL + anon key.");}
+const sb=window.supabase?.createClient(cfg.SUPABASE_URL||"https://placeholder.supabase.co",cfg.SUPABASE_ANON_KEY||"placeholder");
+let products=[],news=[],cart=JSON.parse(localStorage.getItem("dc_cart")||"[]"),currentCat="all",user=null;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], rub=n=>new Intl.NumberFormat("ru-RU").format(n)+" ₽";
+function toast(msg){const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.append(el);setTimeout(()=>el.remove(),2200)}
+function show(page){$$(".page").forEach(x=>x.classList.remove("active"));$("#"+page+"Page")?.classList.add("active");scrollTo(0,0);if(page==="catalog")renderProducts();if(page==="orders")loadOrders();if(page==="profile")renderProfile()}
+$$("[data-page]").forEach(b=>b.onclick=()=>show(b.dataset.page));
+$$("[data-cat]").forEach(b=>b.onclick=()=>{currentCat=b.dataset.cat;show("catalog")});
+async function loadData(){let p=await sb.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});products=p.data||[];let n=await sb.from("news").select("*").eq("is_published",true).order("created_at",{ascending:false});news=n.data||[];renderProducts();renderNews()}
+function renderProducts(){let q=($("#search")?.value||"").toLowerCase();let arr=products.filter(p=>(currentCat==="all"||p.category===currentCat)&&p.name.toLowerCase().includes(q));$("#filters").innerHTML=[["all","Все"],["electronics","Электроника"],["clothing","Одежда"],["vape","Вейпы"],["liquids","Жидкости"]].map(x=>`<button class="${currentCat===x[0]?"active":""}" data-f="${x[0]}">${x[1]}</button>`).join("");$$("[data-f]").forEach(b=>b.onclick=()=>{currentCat=b.dataset.f;renderProducts()});$("#products").innerHTML=arr.map(p=>`<article class="product"><div class="pimg">${p.image_url?`<img src="${p.image_url}" style="width:100%;height:100%;object-fit:cover">`:`<div class="pmark"></div>`}</div><div class="pbody"><div class="pcat">${p.category}</div><h3>${esc(p.name)}</h3><p>${esc(p.description||"")}</p><div class="prow"><b>${rub(p.price)}</b><button class="add" data-add="${p.id}">В корзину</button></div></div></article>`).join("")||"<div class='notice'>Товары не найдены.</div>";$$("[data-add]").forEach(b=>b.onclick=()=>addCart(b.dataset.add))}
+$("#search").oninput=renderProducts;
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function addCart(id){let p=products.find(x=>x.id==id);if(!p)return;if(["vape","liquids"].includes(p.category)){toast("Для этой категории требуется обязательная проверка возраста и соблюдение закона.");return}let i=cart.find(x=>x.id==id);i?i.qty++:cart.push({id,qty:1});saveCart();renderCart();toast("Добавлено")}
+function saveCart(){localStorage.setItem("dc_cart",JSON.stringify(cart));$("#cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0)}
+function renderCart(){let items=cart.map(i=>{let p=products.find(x=>x.id==i.id);return p?`<div class="cartitem"><div class="thumb"></div><div><b>${esc(p.name)}</b><br><small>${i.qty} × ${rub(p.price)}</small><br><button data-rm="${p.id}">Удалить</button></div><strong>${rub(p.price*i.qty)}</strong></div>`:""}).join("");$("#cartItems").innerHTML=items||"<div class='notice'>Корзина пуста.</div>";let total=cart.reduce((s,i)=>{let p=products.find(x=>x.id==i.id);return s+(p?.price||0)*i.qty},0);$("#cartTotal").textContent=rub(total);$$("[data-rm]").forEach(b=>b.onclick=()=>{cart=cart.filter(x=>x.id!=b.dataset.rm);saveCart();renderCart()})}
+$("#cartBtn").onclick=()=>{$("#cartDrawer").classList.add("open");renderCart()};$("#closeCart").onclick=()=>$("#cartDrawer").classList.remove("open");
+async function authModal(){let {data}=await sb.auth.getUser();user=data.user;if(user){show("profile");return}modal(`<div class="modalhead"><h2>Вход</h2><button onclick="closeModal()">×</button></div><form id="auth" class="form"><input name="email" type="email" required placeholder="Email"><input name="password" type="password" required placeholder="Пароль"><button class="btn lime">Войти</button></form><p class="notice">Нет аккаунта? <button id="registerLink">Зарегистрироваться</button></p>`);$("#auth").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target);let r=await sb.auth.signInWithPassword({email:f.get("email"),password:f.get("password")});if(r.error)return toast(r.error.message);closeModal();show("profile");};$("#registerLink").onclick=registerModal}
+function registerModal(){modal(`<div class="modalhead"><h2>Регистрация</h2><button onclick="closeModal()">×</button></div><form id="reg" class="form"><input name="name" required placeholder="Имя"><input name="city" required placeholder="Город"><input name="email" type="email" required placeholder="Email"><input name="password" type="password" minlength="6" required placeholder="Пароль"><button class="btn lime">Создать аккаунт</button></form>`);$("#reg").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target);let r=await sb.auth.signUp({email:f.get("email"),password:f.get("password"),options:{data:{name:f.get("name"),city:f.get("city")}}});if(r.error)return toast(r.error.message);toast("Проверьте почту для подтверждения");closeModal()}}
+function modal(html){let x=document.createElement("div");x.className="modalback";x.innerHTML=`<div class="modal">${html}</div>`;x.onclick=e=>{if(e.target===x)x.remove()};document.body.append(x)}
+function closeModal(){document.querySelector(".modalback")?.remove()}
+$("#accountBtn").onclick=authModal;
+async function renderProfile(){let {data}=await sb.auth.getUser();user=data.user;if(!user){$("#profile").innerHTML="<div class='notice'>Войдите, чтобы открыть профиль.</div>";return}let p=await sb.from("profiles").select("*").eq("id",user.id).single();let d=p.data;$("#profile").innerHTML=`<div class="profile order"><h3>${esc(d?.name||user.email)}</h3><p>${esc(user.email)}</p><p>Город: ${esc(d?.city||"не указан")}</p><button id="logout" class="btn dark">Выйти</button></div>`;$("#logout").onclick=async()=>{await sb.auth.signOut();show("home")}}
+async function checkout(){if(!cart.length)return toast("Корзина пуста");let {data}=await sb.auth.getUser();if(!data.user)return authModal();let {data:profile}=await sb.from("profiles").select("*").eq("id",data.user.id).single();modal(`<div class="modalhead"><h2>Оформление</h2><button onclick="closeModal()">×</button></div><form id="orderForm" class="form"><input name="city" required value="${esc(profile?.city||"")}" placeholder="Город"><input name="address" required placeholder="Адрес доставки"><input name="phone" required value="${esc(profile?.phone||"")}" placeholder="Телефон"><button class="btn lime">Создать заказ</button></form>`);$("#orderForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target);let total=cart.reduce((s,i)=>s+(products.find(p=>p.id==i.id)?.price||0)*i.qty,0);let r=await sb.from("orders").insert({user_id:data.user.id,total,status:"created",city:f.get("city"),address:f.get("address"),phone:f.get("phone")}).select().single();if(r.error)return toast(r.error.message);let rows=cart.map(i=>({order_id:r.data.id,product_id:i.id,quantity:i.qty,price:products.find(p=>p.id==i.id)?.price||0}));await sb.from("order_items").insert(rows);cart=[];saveCart();renderCart();closeModal();show("orders");toast("Заказ создан")}}
+$("#checkout").onclick=checkout;
+async function loadOrders(){let {data:u}=await sb.auth.getUser();if(!u.user){$("#orders").innerHTML="<div class='notice'>Войдите, чтобы видеть заказы.</div>";return}let r=await sb.from("orders").select("*,order_items(*)").eq("user_id",u.user.id).order("created_at",{ascending:false});let status=["created","confirmed","packing","shipping","arrived","completed"];let names={created:"Создан",confirmed:"Подтверждён",packing:"Собирается",shipping:"В пути",arrived:"Прибыл",completed:"Выдан"};$("#orders").innerHTML=(r.data||[]).map(o=>{let step=Math.max(1,status.indexOf(o.status)+1);return `<div class="order"><b>Заказ #${o.id.slice(0,8)}</b><p>${names[o.status]||o.status}</p><div class="track">${[1,2,3,4,5].map(i=>`<span class="${i<=Math.min(step,5)?"done":""}"></span>`).join("")}</div><small>Город: ${esc(o.city)} · Сумма: ${rub(o.total)}</small></div>`}).join("")||"<div class='notice'>Заказов пока нет.</div>"}
+function renderNews(){$("#newsList").innerHTML=news.map(n=>`<article><small>${new Date(n.created_at).toLocaleDateString("ru-RU")}</small><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p></article>`).join("")||"<div class='notice'>Пока новостей нет.</div>"}
+sb.auth.onAuthStateChange(()=>{saveCart();});
+saveCart();loadData();renderNews();
