@@ -1,1 +1,1 @@
-window.DC_CONFIG={SUPABASE_URL:"YOUR_SUPABASE_URL",SUPABASE_ANON_KEY:"YOUR_PUBLIC_ANON_KEY"};
+window.DC_CONFIG={SUPABASE_URL:"https://bjucqkukpekyzvwbompt.supabase.co/rest/v1/",SUPABASE_ANON_KEY:"sb_publishable_6ISRVHyZ3kKLZLfcCWi62g_9BvpbxqC"};
