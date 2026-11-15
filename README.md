@@ -28,3 +28,5 @@
 
 ## Telegram
 Для уведомлений нужен Telegram Bot Token и Chat ID. Их задают как secrets в Supabase Edge Function. Никогда не кладите bot token в `app.js`.
+
+Deployment update - Drip & Coil
